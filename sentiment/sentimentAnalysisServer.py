@@ -1,4 +1,4 @@
-import jsonify, json, responses, render_template
+from flask import request, jsonify, json, Response, render_template
 import pygal
 import SentimentAnalyzer
 from pygal.style import LightenStyle
@@ -30,7 +30,7 @@ class SentimentAnalysisClass:
             res1 = result[:-3]
             res2 = result[-2:]
             #return res1+res2
-            return responses(res1+res2, mimetype='application/json')
+            return Response(res1+res2, mimetype='application/json')
     
     def postChat(self,chat, time):
         
