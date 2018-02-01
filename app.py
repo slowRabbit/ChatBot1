@@ -1,8 +1,9 @@
 import json
-
+import datetime
 import requests
 from flask import Flask, request, jsonify
 from types import *
+
 
 from chat.chat_session import ChatSession
 from handlers.message import MessageHandler
@@ -41,6 +42,11 @@ def messengerHook():
     # Getting data from request and sending for resolution
     data = request.get_json()
     resolvedData = messageHandler.handle(data, "facebook")
+    
+    messageText = resolvedData["message"]
+    currentTime = datetime.datetime.now().strftime("%a, %I:%M:%S")
+    responsePostChat = Sentiment.postChat(messageText, currentTime)
+    print ("PostChat : ", responsePostChat)
     response = getReply(resolvedData)
     print response
     handleResponse(resolvedData["senderId"],response)
