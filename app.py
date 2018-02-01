@@ -125,6 +125,10 @@ def resetChatList():
     resposneResetChatList = Sentiment.resetChatList()
     return resposneResetChatList
 
+@app.route('/SentimentAnalysis/', methods = ['GET'])
+def getSentimentAnalysisWebPage():
+    responseSentimentAnalysis = Sentiment.getSentimentAnalysisWebPage()
+    return responseSentimentAnalysis
 
 
 if __name__ == '__main__':
