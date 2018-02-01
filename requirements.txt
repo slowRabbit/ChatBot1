@@ -4,3 +4,4 @@ apiai
 gunicorn
 jsonify
 pygal==2.4.0
+responses==0.3.0
