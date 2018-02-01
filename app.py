@@ -112,5 +112,20 @@ def getAllChats():
     resposneGetAllChats = Sentiment.getAllChats()
     return resposneGetAllChats
 
+@app.route('/postChat', methods =['POST'])
+def postChat():
+    response = request.get_json()
+    chat = response.get('chat')
+    time = response.get('time')
+    responsePostChat = Sentiment.postChat(chat, time)
+    return responsePostChat
+
+@app.route('/resetChatList', methods =['POST'])
+def resetChatList():
+    resposneResetChatList = Sentiment.resetChatList()
+    return resposneResetChatList
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
