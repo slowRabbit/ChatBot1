@@ -1,0 +1,2 @@
+from sentimentAnalysisServer import SentimentAnalysisClass
+
