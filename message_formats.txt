@@ -1,0 +1,54 @@
+FACEBOOK MESSAGE - 
+
+	{
+		u'object': u'page', 
+		u'entry': [
+			{
+				u'time': 1513095580788, 
+				u'id': u'132600620735743', 
+				u'messaging': [
+					{
+						u'timestamp': 1513095580701, 
+						u'recipient': {
+							u'id': u'132600620735743'
+						}, 
+						u'sender': {
+							u'id': u'1499806963449513'
+						}, 
+						u'message': {
+							u'mid': u'mid.$cAAAiakcuKdpmfMuUHVgS4ZKyxZOS', 
+							u'text': u'hi', 
+							u'seq': 37846
+						}
+					}
+				]
+			}
+		]
+	}
+
+FACEBOOK POSTBACK EVENT - 
+
+	{
+		u'object': u'page', 
+		u'entry': [
+			{
+				u'time': 1513095694660, 
+				u'id': u'132600620735743', 
+				u'messaging': [
+					{
+						u'timestamp': 1513095694660, 
+						u'recipient': {
+							u'id': u'132600620735743'
+						},
+						u'sender': {
+							u'id': u'1499806963449513'
+						},
+						u'postback': {
+							u'payload': u'GET_BALANCE', 
+							u'title': u'Get Balance'
+						}
+					}
+				]
+			}
+		]
+	}
