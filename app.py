@@ -44,7 +44,7 @@ def messengerHook():
     resolvedData = messageHandler.handle(data, "facebook")
     
     messageText = resolvedData["message"]
-    currentTime = datetime.datetime.now().strftime("%a, %I:%M:%S")
+    currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(messageText, currentTime)
     print ("PostChat : ", responsePostChat)
     response = getReply(resolvedData)
