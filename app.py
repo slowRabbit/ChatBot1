@@ -50,8 +50,8 @@ def messengerHook():
     responsePostChat = Sentiment.postChat(messageText, currentTime)
     print ("PostChat : ", responsePostChat)
     
-    factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
-    socketio.emit('sentiment', factor_list)
+    #factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
+    #socketio.emit('sentiment', factor_list)
     
     response = getReply(resolvedData)
     print response
@@ -133,8 +133,8 @@ def postChat():
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(chat, currentTime)
     
-    factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
-    socketio.emit('sentiment', factor_list)
+    #factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
+    #socketio.emit('sentiment', factor_list)
     
     print("post chat :", responsePostChat)
     return responsePostChat
