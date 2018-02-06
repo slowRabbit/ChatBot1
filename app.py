@@ -122,6 +122,7 @@ def send_message(recipient_id, message_text):
 @app.route('/getAllChats', methods = ['GET'])
 def getAllChats():
     resposneGetAllChats = Sentiment.getAllChats()
+    print("get all chats :", resposneGetAllChats)
     return resposneGetAllChats
 
 @app.route('/postChat', methods =['POST'])
@@ -135,6 +136,7 @@ def postChat():
     factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
     socketio.emit('sentiment', factor_list)
     
+    print("post chat :", responsePostChat)
     return responsePostChat
 
 @app.route('/resetChatList', methods =['POST'])
