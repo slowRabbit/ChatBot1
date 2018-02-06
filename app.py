@@ -163,5 +163,5 @@ def normal_function():
 
 if __name__ == '__main__':
     #default port for socket io is 5000
-    socketio.run(app, port=7080)
+    socketio.run(app, port=8040)
     #app.run(debug=True, port= 7040)
