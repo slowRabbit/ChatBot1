@@ -1,7 +1,7 @@
 import json
 import datetime
 import requests
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from types import *
 
 
@@ -12,10 +12,6 @@ from modules import EventInvoker
 
 from sentiment import SentimentAnalysisClass
 
-from flask_socketio import SocketIO
-from flask_socketio import send
-from flask_socketio import emit
-
 chatSessionHandler = ChatSession()
 messageHandler = MessageHandler()
 eventHandler = EventHandler()
@@ -23,8 +19,6 @@ eventInvoker = EventInvoker()
 Sentiment = SentimentAnalysisClass()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
 
 # App route for facebook messenger to check if server is running
 @app.route('/', methods=['GET'])
@@ -37,7 +31,11 @@ def verify():
     return "Hello world", 200
 
 
+
 # Note - Change the above & following route to /messenger when integrating more IM's
+
+
+
 # App route to recieve messages from facebook messenger
 @app.route('/', methods=['POST'])
 def messengerHook():
@@ -49,10 +47,6 @@ def messengerHook():
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(messageText, currentTime)
     print ("PostChat : ", responsePostChat)
-    
-    #factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
-    #socketio.emit('sentiment', factor_list)
-    
     response = getReply(resolvedData)
     print response
     handleResponse(resolvedData["senderId"],response)
@@ -122,21 +116,14 @@ def send_message(recipient_id, message_text):
 @app.route('/getAllChats', methods = ['GET'])
 def getAllChats():
     resposneGetAllChats = Sentiment.getAllChats()
-    print("get all chats :", resposneGetAllChats)
     return resposneGetAllChats
 
 @app.route('/postChat', methods =['POST'])
 def postChat():
     response = request.get_json()
     chat = response.get('chat')
-    #time = response.get('time')
-    currentTime = datetime.datetime.now().strftime("%I:%M")
-    responsePostChat = Sentiment.postChat(chat, currentTime)
-    
-    #factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
-    #socketio.emit('sentiment', factor_list)
-    
-    print("post chat :", responsePostChat)
+    time = response.get('time')
+    responsePostChat = Sentiment.postChat(chat, time)
     return responsePostChat
 
 @app.route('/resetChatList', methods =['POST'])
@@ -149,19 +136,6 @@ def getSentimentAnalysisWebPage():
     responseSentimentAnalysis = Sentiment.getSentimentAnalysisWebPage()
     return responseSentimentAnalysis
 
-@app.route('/SocketTesting/', methods = ['GET'])
-def getSocketTestingWebPage():
-    #responseSentimentAnalysis = Sentiment.getSentimentAnalysisWebPage()
-    return render_template("sockettesting.html")
-
-@socketio.on('client_connected')
-def handle_client_connect_event(json):
-    print('received json: {0}'.format(str(json)))
-
-def normal_function():
-    emit('alert', 'Message from backend')
 
 if __name__ == '__main__':
-    #default port for socket io is 5000
-    socketio.run(app, port=8040)
-    #app.run(debug=True, port= 7040)
+    app.run(debug=True)
