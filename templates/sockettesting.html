@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript">
+
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.emit('client_connected', {data: 'New client!'});
+    console.log('socket connected, message sent to server ');
+
+function connect(){
+        socket.emit('client_connected', {data: 'New client!'});
+        console.log('socket connected, message sent to server ');
+}
+
+socket.on('alert', function (factor_list) {
+    console.log('Factor List :'+factor_list);
+    alert('Factor Alert Message!! ' + factor_list);
+    
+    
+    
+});
+
+
+</script>
+
+<title>Websockets tutorial</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+<body>
+<div class=page>
+    <h1>Hello World!</h1>
+    <button type="button" onclick="connect()">Connect</button>
+</div>
+</body>
+</html>

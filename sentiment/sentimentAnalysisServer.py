@@ -2,8 +2,8 @@ from flask import request, jsonify, json, Response, render_template
 import pygal
 import SentimentAnalyzer
 from pygal.style import LightenStyle
-
-
+from pygal.style import DarkStyle
+from pygal.style import NeonStyle
 
 class SentimentAnalysisClass:
     
@@ -64,7 +64,9 @@ class SentimentAnalysisClass:
         
         graph_score = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_score_style)
         graph_magnitude = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_magnitude_style)
-        graph_factor = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_factor_style)
+        #graph_factor = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_factor_style)
+        graph_factor = pygal.StackedLine(fill=True, interpolate='cubic', style=DarkStyle)
+        
         label_list = []
         factor_list = []
         magnitude_list = []
@@ -94,3 +96,43 @@ class SentimentAnalysisClass:
                 
         return render_template("sentimentanalysis.html", graph_data_score = graph_data_score, graph_data_magnitude = graph_data_magnitude, graph_data_factor = graph_data_factor)
 
+    def getUpdatedFactorListForGraphDisplay(self):
+        #graph = pygal.Line()
+        graph_score_style = LightenStyle('#0288D1')
+        graph_magnitude_style = LightenStyle('#AFB42B')
+        graph_factor_style = LightenStyle('#FFA000')
+        
+        graph_score = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_score_style)
+        graph_magnitude = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_magnitude_style)
+        #graph_factor = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_factor_style)
+        graph_factor = pygal.StackedLine(fill=True, interpolate='cubic', style=DarkStyle)
+        
+        label_list = []
+        factor_list = []
+        magnitude_list = []
+        score_list = []
+                
+        for Chat  in  self.allChatList:
+            label_list.append(Chat.getTime())
+            score_list.append(float(Chat.getScore()))
+            magnitude_list.append(float(Chat.getMagnitude()))
+            factor_list.append(float(Chat.getFactor()))
+                
+        graph_score.title = ' Score VS Time '
+        graph_magnitude.title = ' Magnitude VS Time '
+        graph_factor.title = ' Factor VS Time '
+        
+        graph_score.x_labels = label_list
+        graph_magnitude.x_labels = label_list
+        graph_factor.x_labels = label_list
+        
+        graph_score.add('Score', score_list)
+        graph_magnitude.add('Magnitude', magnitude_list)
+        graph_factor.add('Factor', factor_list)
+        
+        graph_data_score = graph_score.render_data_uri()
+        graph_data_magnitude = graph_magnitude.render_data_uri()
+        graph_data_factor = graph_factor.render_data_uri()
+                
+        return graph_data_factor
+    

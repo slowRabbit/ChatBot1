@@ -1,7 +1,30 @@
 <!doctype html>
+<html>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript">
+
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.emit('client_connected', {data: 'sent New client!'});
+    console.log('sent socket connected, message sent to server ');
+
+function connect(){
+        socket.emit('client_connected', {data: 'sentiment New client!'});
+        console.log('sentiment socket connected, message sent to server ');
+}
+
+socket.on('sentiment', function (factor_list) {
+    console.log('sentiment Factor List :'+factor_list);
+  //  alert('sentiment Factor Alert Message!! ' + factor_list);
+    
+    document.getElementById("factor").src=factor_list;
+    
+});
+</script>
 
 <title> ChatBot SentimentAnalyzer </title>
 <head>
+
 
 
 
@@ -25,19 +48,24 @@ div.heading {
 </head>
 
 <body class="body" style="background-color: #424242;">
+
+     <button type="button" onclick="connect()">Connect</button>
+
       <div class="heading" align="center">
       Realtime chat sentiment analysis
 	  </div>
 	  
 	  <div class="graph" align="center">
+	  <!--
 			<embed type="image/svg+xml" src={{graph_data_score|safe}} style='max-width:800px;'/>
 			
 			<embed type="image/svg+xml" src={{graph_data_magnitude|safe}} style='max-width:800px'/>
-			
-			<embed type="image/svg+xml" src={{graph_data_factor|safe}} style='max-width:800px'/>
+			-->
+			<embed type="image/svg+xml" id="factor" src={{graph_data_factor|safe}} style='max-width:800px'/>
 			
 	  </div>
 	  
 	  
 
 </body>
+</html>
