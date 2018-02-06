@@ -50,6 +50,9 @@ def messengerHook():
     responsePostChat = Sentiment.postChat(messageText, currentTime)
     print ("PostChat : ", responsePostChat)
     
+    factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
+    socketio.emit('sentiment', factor_list)
+    
     response = getReply(resolvedData)
     print response
     handleResponse(resolvedData["senderId"],response)
@@ -129,17 +132,8 @@ def postChat():
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(chat, currentTime)
     
-    #test working with sockets here 
-    #socketio.emit('alert', {'data': 42}, namespace='/chat')
-    
-    #object = {
-	#"chat":"i am really working hard on learning socket io.. very tired trying on it "
-    #}
     factor_list = Sentiment.getUpdatedFactorListForGraphDisplay()
-    #label_list = Sentiment.getUpdatedLabelListForGraphDisplay()
     socketio.emit('sentiment', factor_list)
-    socketio.emit('alert', factor_list)
-    #emit('alert', 'Message from backend')
     
     return responsePostChat
 
