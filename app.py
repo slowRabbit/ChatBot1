@@ -1,7 +1,7 @@
 import json
 import datetime
 import requests
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from types import *
 
 
@@ -20,6 +20,7 @@ Sentiment = SentimentAnalysisClass()
 
 app = Flask(__name__)
 
+updated = False
 # App route for facebook messenger to check if server is running
 @app.route('/', methods=['GET'])
 def verify():
@@ -46,6 +47,9 @@ def messengerHook():
     messageText = resolvedData["message"]
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(messageText, currentTime)
+    global updated
+    updated = True
+    
     print ("PostChat : ", responsePostChat)
     response = getReply(resolvedData)
     print response
@@ -124,6 +128,8 @@ def postChat():
     chat = response.get('chat')
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(chat, currentTime)
+    global updated
+    updated = True
     return responsePostChat
 
 @app.route('/resetChatList', methods =['POST'])
@@ -134,7 +140,30 @@ def resetChatList():
 @app.route('/SentimentAnalysis/', methods = ['GET'])
 def getSentimentAnalysisWebPage():
     responseSentimentAnalysis = Sentiment.getSentimentAnalysisWebPage()
+    global updated
+    updated = False
     return responseSentimentAnalysis
+
+@app.route('/ajax', methods = ['POST'])
+def ajax_request():
+    username = request.form['username']
+    return jsonify(username=username)
+
+@app.route('/checkUpdated', methods = ['GET'])
+def check_updated():
+    responseUpdatedFactorList = Sentiment.getFactorDataForGraph()
+    print ("1. reached python route for updated factor list ")
+    print ("2. updated factor list uri data :", responseUpdatedFactorList)
+    #app.updated
+    return "Hello"
+
+@app.route('/getUpdatedFactorList', methods = ['GET'])
+def updated_factor_list_ajax():
+    responseUpdatedFactorList = Sentiment.getFactorDataForGraph()
+    print ("1. reached python route for updated factor list ")
+    print ("2. updated factor list uri data :", responseUpdatedFactorList)
+    return responseUpdatedFactorList
+    #return jsonify(data=responseUpdatedFactorList)
 
 
 if __name__ == '__main__':
