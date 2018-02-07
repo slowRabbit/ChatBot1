@@ -68,8 +68,9 @@ class SentimentAnalysisClass:
         #graph = pygal.Line()
         graph_score_style = LightenStyle('#0288D1')
         graph_magnitude_style = LightenStyle('#AFB42B')
-        graph_factor_style = LightenStyle('#FFA000')
-        
+        #graph_factor_style = LightenStyle('#FFA000')
+        graph_factor_style = LightenStyle('#00B0FF')
+                                          
         graph_score = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_score_style)
         graph_magnitude = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_magnitude_style)
         graph_factor = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_factor_style)
@@ -106,7 +107,8 @@ class SentimentAnalysisClass:
         #graph = pygal.Line()
         graph_score_style = LightenStyle('#0288D1')
         graph_magnitude_style = LightenStyle('#AFB42B')
-        graph_factor_style = LightenStyle('#FFA000')
+        #graph_factor_style = LightenStyle('#FFA000')
+        graph_factor_style = LightenStyle('#00B0FF')
         
         graph_score = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_score_style)
         graph_magnitude = pygal.StackedLine(fill=True, interpolate='cubic', style=graph_magnitude_style)

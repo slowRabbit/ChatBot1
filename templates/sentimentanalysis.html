@@ -71,7 +71,9 @@
     
     $(document).ready(function() {
   
-          factor_graph_updater()
+          //factor_graph_updater()
+          console.log("graph updation Started ! ")
+          updatetimer();
     });
     
     function factor_graph_updater() {
@@ -83,19 +85,90 @@
         };
     
     
+    var timer = null; 
+
+    var updatetimer = function () {
+    //do stuff
+
+    console.log("graph updated ")
+    document.getElementById("graph_factor").src="/getUpdatedFactorList";
+ 
+
+    // By the way, can just pass in the function name instead of an anonymous
+    // function unless if you want to pass parameters or change the value of 'this'
+    timer = setTimeout(updatetimer, 8000);
+       };
+       
+    function startUpdating(){
+        console.log("Graph update started ")
+        updatetimer();
+        document.getElementById("start_updating").innerHTML="Live update started..";
+        document.getElementById("stop_updating").innerHTML="Stop live update !";
+    }   
+    
+    function stopUpdating(){
+        console.log("graph updating stopped ! ")
+        clearTimeout(timer);
+        document.getElementById("start_updating").innerHTML="Start live update";
+        document.getElementById("stop_updating").innerHTML="Live update stopped !!";
+    }
+    
+    
+    
 </script>
 
 
 
 <style>
+
+.button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+#start_updating {
+     background-color: #4CAF50;
+}
+
+#start_updating:hover {
+    background-color: #388E3C;
+}
+
+#stop_updating {
+     background-color: #F44336;
+}
+
+#stop_updating:hover {
+    background-color: #D32F2F;
+}
+
+#heading {
+    background-color: #00B0FF;
+    border: none;
+    color: white;
+    padding: 20px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 45px;
+    margin: 8px 10px;
+}
+
 div.graph{
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 div.heading {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 50px;
+    margin-bottom: 40px;
     color : white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 45px;
@@ -110,11 +183,10 @@ div.heading {
       
       <!--
       <button type="button" onclick="loadFactorDataGraph()" > Update </Button>
-      
-      <button type="button" onclick="worker()" > CheckUpdated </Button>
       -->
+     
       <div class="heading" align="center">
-      Realtime chat sentiment analysis
+       <button id="heading"> Realtime chat sentiment analysis</Button>
 	  </div>
 	  
 	  <div class="graph" align="center" >
@@ -125,6 +197,11 @@ div.heading {
 			<embed type="image/svg+xml" src={{graph_data_magnitude|safe}} style='max-width:800px'/>
 			-->
 			<embed id="graph_factor" type="image/svg+xml" src="/getUpdatedFactorList" style='width:45%;height:70vh'/>
+			
+			<div align="center" style="vertical-align:top;">
+           <button id="start_updating" class="button" type="button" onclick="startUpdating()" > Start live update </Button>
+        	   <button id="stop_updating"  class="button" type="button" onclick="stopUpdating()" > Stop live update </Button>
+        	  </div>
 			
 	  </div>
 	  
