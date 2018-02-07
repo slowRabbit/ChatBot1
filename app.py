@@ -122,8 +122,8 @@ def getAllChats():
 def postChat():
     response = request.get_json()
     chat = response.get('chat')
-    time = response.get('time')
-    responsePostChat = Sentiment.postChat(chat, time)
+    currentTime = datetime.datetime.now().strftime("%I:%M")
+    responsePostChat = Sentiment.postChat(chat, currentTime)
     return responsePostChat
 
 @app.route('/resetChatList', methods =['POST'])
