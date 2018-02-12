@@ -64,6 +64,22 @@ class SentimentAnalysisClass:
             self.allChatList[:] = []
             return jsonify({'result':'All chats removed'})
     
+    def getChatJSJson(self):
+         label_list = []
+         #factor_list = []
+         positive_factor_list = []
+         negetive_factor_list = []
+         
+         for Chat  in  self.allChatList:
+            label_list.append(Chat.getTime())
+            currentChatFactor = float(Chat.getFactor())
+            if(currentChatFactor >= 0):
+                positive_factor_list.append(currentChatFactor)
+            else :
+                negetive_factor_list.append(currentChatFactor)
+                
+            #factor_list.append(float(Chat.getFactor()))
+    
     def getSentimentAnalysisWebPage(self):
         #graph = pygal.Line()
         graph_score_style = LightenStyle('#0288D1')

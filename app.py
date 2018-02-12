@@ -144,6 +144,10 @@ def getSentimentAnalysisWebPage():
     updated = False
     return responseSentimentAnalysis
 
+@app.route('/chartjs/', methods = ['GET'])
+def getChartJsExample():
+    return render_template("chartjshtml.html")
+
 @app.route('/ajax', methods = ['POST'])
 def ajax_request():
     username = request.form['username']
@@ -167,4 +171,4 @@ def updated_factor_list_ajax():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port = 8000)

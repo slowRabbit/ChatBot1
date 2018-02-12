@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Live chat analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<style>
+
+    #graphDiv  {
+            width: 50%; 
+            margin: 0 auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            }
+
+</style>
+
+</head>
+<body class="body">
+
+<div id="graphDiv">
+
+<canvas id="myChart" align="cetner"></canvas>
+</div>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [{
+            label: ["1", "2",  "3"],
+            backgroundColor: '#00B0FF',
+            borderColor: '#0091EA',
+            data: [0, 1.2, -0.5, 2.0, -3.8, 5, 2.1, -0.8],
+            fill:true,
+        }]
+    },
+
+    // Configuration options go here
+    options: {
+    
+    }
+});
+
+</script>
+</body>
+</html>
