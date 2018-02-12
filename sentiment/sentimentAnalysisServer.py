@@ -9,6 +9,7 @@ class SentimentAnalysisClass:
     
     def __init__(self):
         self.allChatList = []
+        self.tempChatList = []
         self.allChatDictionary = {}
         self.isUpdated = 0
     
@@ -48,7 +49,7 @@ class SentimentAnalysisClass:
         
         Chat = SentimentAnalyzer.getSentimentAnalyzedChat(chat, time)
         self.allChatList.append(Chat)
-    
+        self.tempChatList.append(Chat)
     
         return jsonify({'AddedChat':
                 {
@@ -62,9 +63,10 @@ class SentimentAnalysisClass:
         
     def resetChatList(self):
             self.allChatList[:] = []
+            self.tempChatList[:] = []
             return jsonify({'result':'All chats removed'})
     
-    def getChatJSJson(self):
+    def getInitialGraphDataJson(self):
          label_list = []
          #factor_list = []
          positive_factor_list = []
@@ -75,10 +77,35 @@ class SentimentAnalysisClass:
             currentChatFactor = float(Chat.getFactor())
             if(currentChatFactor >= 0):
                 positive_factor_list.append(currentChatFactor)
+                negetive_factor_list.append(0)
             else :
+                positive_factor_list.append(0)
                 negetive_factor_list.append(currentChatFactor)
-                
-            #factor_list.append(float(Chat.getFactor()))
+         
+         return jsonify({'labels':label_list, 'positive_factor_list':positive_factor_list, 'negetive_factor_list':negetive_factor_list})
+            
+    def getRepeatedGraphDataJson(self):
+         label_list = []
+         #factor_list = []
+         positive_factor_list = []
+         negetive_factor_list = []
+         
+         for Chat  in  self.tempChatList:
+            label_list.append(Chat.getTime())
+            currentChatFactor = float(Chat.getFactor())
+            if(currentChatFactor >= 0):
+                positive_factor_list.append(currentChatFactor)
+                negetive_factor_list.append(0)
+            else :
+                positive_factor_list.append(0)
+                negetive_factor_list.append(currentChatFactor)
+         
+        
+         self.tempChatList[:] = []
+         return jsonify({'labels':label_list, 'positive_factor_list':positive_factor_list, 'negetive_factor_list':negetive_factor_list})
+             
+        
+        
     
     def getSentimentAnalysisWebPage(self):
         #graph = pygal.Line()

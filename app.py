@@ -128,8 +128,6 @@ def postChat():
     chat = response.get('chat')
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(chat, currentTime)
-    global updated
-    updated = True
     return responsePostChat
 
 @app.route('/resetChatList', methods =['POST'])
@@ -147,6 +145,16 @@ def getSentimentAnalysisWebPage():
 @app.route('/chartjs/', methods = ['GET'])
 def getChartJsExample():
     return render_template("chartjshtml.html")
+
+@app.route('/getInitialGraphDataJson/', methods = ['GET'])
+def getInitialGraphDataJson():
+    responseChatData = Sentiment.getInitialGraphDataJson()
+    return responseChatData
+
+@app.route('/getRepeatedGraphDataJson/', methods = ['GET'])
+def getRepeatedGraphDataJson():
+    responseChatData = Sentiment.getRepeatedGraphDataJson()
+    return responseChatData
 
 @app.route('/ajax', methods = ['POST'])
 def ajax_request():
@@ -171,4 +179,4 @@ def updated_factor_list_ajax():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 8000)
+    app.run(debug=True, port = 7020)
