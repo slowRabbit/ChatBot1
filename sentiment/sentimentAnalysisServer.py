@@ -46,7 +46,6 @@ class SentimentAnalysisClass:
         
         Chat = SentimentAnalyzer.getSentimentAnalyzedChat(chat, time)
         self.allChatList.append(Chat)
-        self.tempChatList.append(Chat)
     
         return jsonify({'AddedChat':
                 {
