@@ -20,7 +20,6 @@ Sentiment = SentimentAnalysisClass()
 
 app = Flask(__name__)
 
-updated = False
 # App route for facebook messenger to check if server is running
 @app.route('/', methods=['GET'])
 def verify():
@@ -47,8 +46,7 @@ def messengerHook():
     messageText = resolvedData["message"]
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(messageText, currentTime)
-    global updated
-    updated = True
+
     
     print ("PostChat : ", responsePostChat)
     response = getReply(resolvedData)
@@ -137,13 +135,6 @@ def resetChatList():
 
 @app.route('/SentimentAnalysis/', methods = ['GET'])
 def getSentimentAnalysisWebPage():
-    responseSentimentAnalysis = Sentiment.getSentimentAnalysisWebPage()
-    global updated
-    updated = False
-    return responseSentimentAnalysis
-
-@app.route('/chartjs/', methods = ['GET'])
-def getChartJsExample():
     return render_template("chartjshtml.html")
 
 @app.route('/getInitialGraphDataJson/', methods = ['GET'])
@@ -151,28 +142,5 @@ def getInitialGraphDataJson():
     responseChatData = Sentiment.getInitialGraphDataJson()
     return responseChatData
 
-
-@app.route('/ajax', methods = ['POST'])
-def ajax_request():
-    username = request.form['username']
-    return jsonify(username=username)
-
-@app.route('/checkUpdated', methods = ['GET'])
-def check_updated():
-    responseUpdatedFactorList = Sentiment.getFactorDataForGraph()
-    print ("1. reached python route for updated factor list ")
-    print ("2. updated factor list uri data :", responseUpdatedFactorList)
-    #app.updated
-    return "Hello"
-
-@app.route('/getUpdatedFactorList', methods = ['GET'])
-def updated_factor_list_ajax():
-    responseUpdatedFactorList = Sentiment.getFactorDataForGraph()
-    print ("1. reached python route for updated factor list ")
-    print ("2. updated factor list uri data :", responseUpdatedFactorList)
-    return responseUpdatedFactorList
-    #return jsonify(data=responseUpdatedFactorList)
-
-
 if __name__ == '__main__':
-    app.run(debug=True, port = 7000)
+    app.run(debug=True)

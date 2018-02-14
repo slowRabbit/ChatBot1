@@ -144,19 +144,19 @@ var chart = new Chart(ctxLineChart, {
 
     // The data for our dataset
     data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July", , ],
+        labels: [],
         datasets: [{
             label: "+Ve Chats",
             backgroundColor: '#4CAF50',
             borderColor: '#4CAF50',
-            data: [0, 0, 1.2, 0,0.5, 2.0, 3.8, 5, 2.1, 0.8],
+            data: [],
             fill:true,
         },
         {
             label: "-Ve Chats",
             backgroundColor: '#F44336',
             borderColor: '#F44336',
-            data: [ 0, -2.2, -0.2, -1.3, -2.2, -1, 0,-0.7, -2.2, 0],
+            data: [],
             fill:true,
         }
         
@@ -174,7 +174,7 @@ var myDoughnutChart = new Chart(ctxDoughnut, {
     data: {
         labels: ["Positive %", "Negetive %"],
         datasets: [{
-            data: [65, 34],
+            data: [100, 0],
             backgroundColor: [
                     "#4CAF50",
                     "#F44336"
