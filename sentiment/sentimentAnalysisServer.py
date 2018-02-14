@@ -71,41 +71,38 @@ class SentimentAnalysisClass:
          #factor_list = []
          positive_factor_list = []
          negetive_factor_list = []
+         positive_chat_count = 0
+         negetive_chat_count = 0
+         all_chat_sentiment_sum = 0
          
          for Chat  in  self.allChatList:
             label_list.append(Chat.getTime())
             currentChatFactor = float(Chat.getFactor())
-            if(currentChatFactor >= 0):
-                positive_factor_list.append(currentChatFactor)
-                negetive_factor_list.append(0)
-            else :
-                positive_factor_list.append(0)
-                negetive_factor_list.append(currentChatFactor)
-         
-         return jsonify({'labels':label_list, 'positive_factor_list':positive_factor_list, 'negetive_factor_list':negetive_factor_list})
+            all_chat_sentiment_sum = all_chat_sentiment_sum + currentChatFactor
             
-    def getRepeatedGraphDataJson(self):
-         label_list = []
-         #factor_list = []
-         positive_factor_list = []
-         negetive_factor_list = []
-         
-         for Chat  in  self.tempChatList:
-            label_list.append(Chat.getTime())
-            currentChatFactor = float(Chat.getFactor())
             if(currentChatFactor >= 0):
+                #when chat is positive
                 positive_factor_list.append(currentChatFactor)
                 negetive_factor_list.append(0)
+                positive_chat_count +=1
+                
             else :
+                #when chat is negetive
                 positive_factor_list.append(0)
                 negetive_factor_list.append(currentChatFactor)
-         
-        
-         self.tempChatList[:] = []
-         return jsonify({'labels':label_list, 'positive_factor_list':positive_factor_list, 'negetive_factor_list':negetive_factor_list})
-             
-        
-        
+                negetive_chat_count +=1
+            
+         total_chats = len(self.allChatList)
+         avgSentiment = float(all_chat_sentiment_sum / total_chats)
+         #returning all data to ajax call for UI update
+         return jsonify({ 'labels':label_list, 
+                          'positive_factor_list':positive_factor_list, 
+                          'negetive_factor_list':negetive_factor_list,
+                          'positive_chat_count': positive_chat_count,
+                          'negetive_chat_count': negetive_chat_count,
+                          'total_chat_count' : total_chats,
+                          'average_sentiment' : avgSentiment
+                          })
     
     def getSentimentAnalysisWebPage(self):
         #graph = pygal.Line()

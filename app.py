@@ -151,10 +151,6 @@ def getInitialGraphDataJson():
     responseChatData = Sentiment.getInitialGraphDataJson()
     return responseChatData
 
-@app.route('/getRepeatedGraphDataJson/', methods = ['GET'])
-def getRepeatedGraphDataJson():
-    responseChatData = Sentiment.getRepeatedGraphDataJson()
-    return responseChatData
 
 @app.route('/ajax', methods = ['POST'])
 def ajax_request():
@@ -179,4 +175,4 @@ def updated_factor_list_ajax():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 8000)
+    app.run(debug=True, port = 7000)
