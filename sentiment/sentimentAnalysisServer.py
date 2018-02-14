@@ -89,7 +89,10 @@ class SentimentAnalysisClass:
                 negetive_chat_count +=1
             
          total_chats = len(self.allChatList)
-         avgSentiment = float(all_chat_sentiment_sum / total_chats)
+         if (total_chats  == 0):
+             avgSentiment = 0
+         else:
+             avgSentiment = float(all_chat_sentiment_sum / total_chats)
          #returning all data to ajax call for UI update
          return jsonify({ 'labels':label_list, 
                           'positive_factor_list':positive_factor_list, 
