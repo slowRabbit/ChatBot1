@@ -179,4 +179,4 @@ def updated_factor_list_ajax():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 7020)
+    app.run(debug=True, port = 8000)
