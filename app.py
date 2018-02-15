@@ -47,11 +47,13 @@ def messengerHook():
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(messageText, currentTime)
 
-    
-    print ("PostChat : ", responsePostChat)
-    response = getReply(resolvedData)
-    print response
-    handleResponse(resolvedData["senderId"],response)
+    if (Sentiment.getReplyEntity()) is 'agent':
+        print("now  human would reply, not bot !!")
+    else :
+        print ("PostChat : ", responsePostChat)
+        response = getReply(resolvedData)
+        print response
+        handleResponse(resolvedData["senderId"],response)
     return "ok", 200
 
 
@@ -88,11 +90,25 @@ def getReply(resolvedData):
 
 # Function to handle response sent from the server
 def handleResponse(senderId, response):
-    if type(response) is list:
-        for message in response:
-            send_message(senderId, message)
-    else:
-        send_message(senderId, response)
+    
+    negChatCount = Sentiment.getNegetiveChatCount()
+    avgSentiment = Sentiment.getAvgChatSentiment() 
+    
+    if  negChatCount >=3 and avgSentiment <=-0.20 :
+        Sentiment.setReplyEntityToAgent()
+    
+    if (Sentiment.getReplyEntity()) is 'agent':
+        print  ("Reply entity -------- Agent !!" )
+        send_message(senderId, "Since we understand that you are not happy with out bot service"+
+                     "we are now connecting you with a real human agent !")
+    else :
+        print  ("Reply entity -------- Bot !!" )        
+        if type(response) is list:
+            for message in response:
+                send_message(senderId, message)
+        else:
+            send_message(senderId, response)
+    
 
 
 # Function to send message to facebook messenger user
@@ -126,6 +142,18 @@ def postChat():
     chat = response.get('chat')
     currentTime = datetime.datetime.now().strftime("%I:%M")
     responsePostChat = Sentiment.postChat(chat, currentTime)
+    
+    negChatCount = Sentiment.getNegetiveChatCount()
+    avgSentiment = Sentiment.getAvgChatSentiment() 
+    
+    if  negChatCount >=4 and avgSentiment <=-0.20 :
+        Sentiment.setReplyEntityToAgent()
+    
+    if (Sentiment.getReplyEntity()) is 'agent':
+        print  ("Reply entity -------- Agent !!" )
+    else :
+        print  ("Reply entity -------- Bot !!" )
+    
     return responsePostChat
 
 @app.route('/resetChatList', methods =['POST'])
@@ -137,9 +165,18 @@ def resetChatList():
 def getSentimentAnalysisWebPage():
     return render_template("chartjshtml.html")
 
+@app.route('/chatList/', methods = ['GET'])
+def getChatListWebPage():
+    return render_template("chatlist.html")
+
 @app.route('/getInitialGraphDataJson/', methods = ['GET'])
 def getInitialGraphDataJson():
     responseChatData = Sentiment.getInitialGraphDataJson()
+    return responseChatData
+
+@app.route('/getChatListJson/', methods = ['GET'])
+def getChatListJson():
+    responseChatData = Sentiment.getAllChatListForWebPage()
     return responseChatData
 
 if __name__ == '__main__':

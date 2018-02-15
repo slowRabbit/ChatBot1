@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="icon" href="/static/chat.png">
+<title>Chat List</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<style>
+
+
+
+    div.heading {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color : #FFC107;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 45px;
+            margin-left : 30px;
+            margin-right : 30px;
+            padding : 30px 10px;
+            background-color : #555555;
+            border-radius: 5px;
+            
+            text-align: center;
+            margin: 50px auto;
+            width: 40%;    
+            
+            border-style: solid;
+            border-width: 2px;
+            border-color: #FFC107;
+    
+}
+
+    div.count {
+    color : #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    }
+    
+    #tableDiv {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            margin-left : 30px;
+            margin-right : 30px;
+            padding : 30px 30px;
+            background-color : #555555;
+            border-radius: 5px;
+            color : white;
+            text-align: center;
+            margin: 0px auto;
+            width: 80%;    
+    }
+    
+    #chatTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#chatTable td, #chatTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    padding : 10px 20px;
+}
+
+#chatTable tr:nth-child(even){background-color: #777777;}
+
+#chatTable tr:hover {background-color: #2196F3;}
+
+#chatTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    padding : 15px 20px;
+    background-color: #FFC107;
+    color: white;
+    font-size: 20px;
+}
+
+</style>
+
+
+</head>
+
+<body class="body" style="background-color: #171717;">
+
+    <div class="heading" align="center">
+        Chat History</Button>
+	</div>
+        
+    </div>
+    <div id="tableDiv">
+    </div>
+   
+    
+    
+
+
+</body>
+
+<script>
+
+
+ $(document).ready(function() {
+  
+          //factor_graph_updater()
+          console.log("Graph updation Started automatically! ")
+          intialDataFetch();
+    });
+    
+    var intialDataFetch = function () {
+    console.log("Chat list updating.. ")
+    var updatedData = $.get('/getChatListJson');
+    updatedData.done(function(results){
+        
+    var time_list = results.time_list;       
+    var chat_list = results.chat_list;
+    var snt_list = results.sentiment_list;
+         
+           console.log('table created');
+	mytable = $('<table ></table>').attr({ id: "chatTable" });
+	var rows = chat_list.length;
+	var cols = new Number(1);
+	var tr = [];
+	var i = 0;
+	var rowTH = $('<tr> <th> S.No </th> <th> Time </th> <th> Chat Message </th> <th> Sentiment </th> </tr>').appendTo(mytable);
+	for (i = 0; i < rows; i++) {
+		var row = $('<tr></tr>').appendTo(mytable);
+		for (var j = 0; j < cols; j++) {
+        		$('<td></td>').text(i+1).appendTo(row); 
+        		$('<td></td>').text(time_list[i]).appendTo(row); 
+        		$('<td></td>').text(chat_list[i]).appendTo(row); 
+        		
+        		var sentiment = snt_list[i];
+        		if(sentiment >=  0)
+        		{   //means positive, hence green  color
+            		$('<td style="color:#4CAF50;"></td>').text(snt_list[i]).appendTo(row); 
+        		}
+        		else
+        		{  //means negative, hence red color
+            		$('<td style="color:#E57373;"></td>').text(snt_list[i]).appendTo(row); 
+        		}
+			
+		}
+		 		 
+	}
+	console.log("TTTTT:"+mytable.html());
+	$('#tableDiv').text('')
+	mytable.appendTo("#tableDiv");	     
+                    
+    });
+    setTimeout(intialDataFetch, 7000);
+       };
+
+</script>
+
+
+</html>
