@@ -45,11 +45,13 @@ def messengerHook():
     
     messageText = resolvedData["message"]
     currentTime = datetime.datetime.now().strftime("%I:%M")
-    responsePostChat = Sentiment.postChat(messageText, currentTime)
+    
 
     if (Sentiment.getReplyEntity()) is 'agent':
-        print("now  human would reply, not bot !!")
+        print("------now  human would reply, not bot !!")
     else :
+        print("------now bot would reply !!!!!!!!!")
+        responsePostChat = Sentiment.postChat(messageText, currentTime)
         print ("PostChat : ", responsePostChat)
         response = getReply(resolvedData)
         print response
@@ -99,8 +101,8 @@ def handleResponse(senderId, response):
     
     if (Sentiment.getReplyEntity()) is 'agent':
         print  ("Reply entity -------- Agent !!" )
-        send_message(senderId, "Since we understand that you are not happy with out bot service"+
-                     "we are now connecting you with a real human agent !")
+        message = "Since we understand that you are not happy with out bot service, we are now connecting you with a real human agent !"
+        send_message(senderId, message)
     else :
         print  ("Reply entity -------- Bot !!" )        
         if type(response) is list:
